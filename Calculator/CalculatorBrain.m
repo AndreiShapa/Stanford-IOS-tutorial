@@ -38,17 +38,11 @@
   return operandObject.doubleValue;
 }
 
-- (void)debugInfo
-{
-  for (id object in self.operandStack) {
-    NSLog([object stringValue]);
-  }
-}
+
 
 - (double)performOperation:(NSString *)operation
 {
   double result = 0;
-  [self debugInfo];
 
   if (     [@"+" isEqualToString:operation]){
     result = [self popOperand] + [self popOperand];

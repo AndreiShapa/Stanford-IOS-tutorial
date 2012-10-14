@@ -1,25 +1,17 @@
-//
-//  CalculatorViewController.m
-//  Calculator
-//
-//  Created by Mark Burns on 13/10/2012.
-//  Copyright (c) 2012 Mark Burns. All rights reserved.
-//
-
 #import "CalculatorViewController.h"
 #import "CalculatorBrain.h"
+#import "CalculatorIo.h"
 
 @interface CalculatorViewController ()
-  @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
   @property (nonatomic) CalculatorBrain *brain;
-
+  @property (nonatomic) CalculatorIo *calculatorIo;
 @end
 
 @implementation CalculatorViewController
 
 @synthesize brain = _brain;
 @synthesize display;
-@synthesize userIsInTheMiddleOfEnteringANumber;
+@synthesize calculatorIo = _calculatorIo;
 
 
 - (CalculatorBrain *)brain{
@@ -29,39 +21,40 @@
 }
 
 
+
+- (CalculatorIo *)calculatorIo{
+  if(!_calculatorIo) _calculatorIo = [[CalculatorIo alloc] init:self.display];
+  
+  return _calculatorIo;
+}
+
 - (IBAction)digitPressed:(UIButton *)inputButton {
   NSString * digit = [inputButton currentTitle];
-  NSLog(@"User touched %@", digit);
-    
-  if (self.userIsInTheMiddleOfEnteringANumber){
-    self.display.text = [self.display.text stringByAppendingString:digit];
-  }
-  else{
-    self.display.text = digit;
-    self.userIsInTheMiddleOfEnteringANumber = YES;
-
-  }
   
+  [self.calculatorIo sendDigit:digit];
+}
+
+- (void)calculate{
+  [self.brain pushOperand: [self.calculatorIo readDigits]];
 }
 
 - (IBAction)enterPressed
 {
-  [self.brain debugInfo];
-
-  [self.brain pushOperand:[self.display.text doubleValue]];
-  self.userIsInTheMiddleOfEnteringANumber = NO;
+  [self calculate];
 }
+
+
 
 - (IBAction)operationPressed:(UIButton *)sender {
   
-  if (self.userIsInTheMiddleOfEnteringANumber) {
-    [self enterPressed];
+  if ([self.calculatorIo inputting]) {
+    [self calculate];
   }
   NSString *operation = [sender currentTitle];
-  NSLog(@"User pressed %@", operation);
   
   double result = [self.brain performOperation:operation];
-  self.display.text = [NSString stringWithFormat:@"%g", result];
+ 
+  [self.calculatorIo set:result];
 }
 
 @end
