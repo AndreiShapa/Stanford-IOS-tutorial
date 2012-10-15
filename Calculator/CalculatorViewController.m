@@ -21,7 +21,6 @@
 }
 
 
-
 - (CalculatorIo *)io{
   if(!_calculatorIo) _calculatorIo = [[CalculatorIo alloc] init:self.display];
   
@@ -34,15 +33,12 @@
   [self.io send:digit];
 }
 
-- (void)calculate{  [self.brain push: [self.io read]];}
+- (void)push{  [self.brain push: [self.io read]];}
 
-- (IBAction)enterPressed{  [self calculate];}
-
-
+- (IBAction)enterPressed{  [self push];}
 
 - (IBAction)operationPressed:(UIButton *)sender {
-  
-  if ([self.io inputting]) {    [self calculate];  }
+  if ([self.io inputting]) {    [self push];  }
   
   NSString *operation = [sender currentTitle];
   

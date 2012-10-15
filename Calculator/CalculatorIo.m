@@ -27,11 +27,23 @@
   NSString * value = [NSString stringWithFormat:@"%g", digit];
   self.output.text = value;
 }
+- (BOOL) hasDecimal:(NSString *)input
+{
+  NSRange hasDecimal = [input rangeOfString: @"."];
+  if(hasDecimal.length == 0){    return NO;}
+  else{return YES;}
+}
 
 - (void) send:(NSString *)digit
 {
   if (self.inputting){
-    [self append:digit];
+    BOOL outputHasDecimal = [self hasDecimal:self.output.text];
+    BOOL inputIsDecimal   = [self hasDecimal:digit];
+    
+    if(!outputHasDecimal || !inputIsDecimal){
+      if(self.output.text)
+      [self append:digit];
+    }
   }
   else{
     self.output.text = digit;
