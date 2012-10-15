@@ -24,7 +24,7 @@
 }
 
 
-- (void)pushOperand:(double)operand
+- (void)push:(double)operand
 {
   NSNumber *operandObject = [NSNumber numberWithDouble:operand];
   [self.operandStack addObject:operandObject];
@@ -40,7 +40,7 @@
 
 
 
-- (double)performOperation:(NSString *)operation
+- (double)perform:(NSString *)operation
 {
   double result = 0;
 
@@ -60,7 +60,7 @@
     
   }
   
-  [self pushOperand:result];
+  [self push:result];
   
   return result;
 }

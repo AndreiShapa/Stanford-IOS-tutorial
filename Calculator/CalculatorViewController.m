@@ -4,14 +4,14 @@
 
 @interface CalculatorViewController ()
   @property (nonatomic) CalculatorBrain *brain;
-  @property (nonatomic) CalculatorIo *calculatorIo;
+  @property (nonatomic) CalculatorIo *io;
 @end
 
 @implementation CalculatorViewController
 
 @synthesize brain = _brain;
 @synthesize display;
-@synthesize calculatorIo = _calculatorIo;
+@synthesize io = _calculatorIo;
 
 
 - (CalculatorBrain *)brain{
@@ -22,7 +22,7 @@
 
 
 
-- (CalculatorIo *)calculatorIo{
+- (CalculatorIo *)io{
   if(!_calculatorIo) _calculatorIo = [[CalculatorIo alloc] init:self.display];
   
   return _calculatorIo;
@@ -31,30 +31,24 @@
 - (IBAction)digitPressed:(UIButton *)inputButton {
   NSString * digit = [inputButton currentTitle];
   
-  [self.calculatorIo sendDigit:digit];
+  [self.io send:digit];
 }
 
-- (void)calculate{
-  [self.brain pushOperand: [self.calculatorIo readDigits]];
-}
+- (void)calculate{  [self.brain push: [self.io read]];}
 
-- (IBAction)enterPressed
-{
-  [self calculate];
-}
+- (IBAction)enterPressed{  [self calculate];}
 
 
 
 - (IBAction)operationPressed:(UIButton *)sender {
   
-  if ([self.calculatorIo inputting]) {
-    [self calculate];
-  }
+  if ([self.io inputting]) {    [self calculate];  }
+  
   NSString *operation = [sender currentTitle];
   
-  double result = [self.brain performOperation:operation];
+  double result = [self.brain perform:operation];
  
-  [self.calculatorIo set:result];
+  [self.io set:result];
 }
 
 @end

@@ -6,8 +6,8 @@
 
 - (CalculatorIo *) init:(UILabel *)output;
 - (void) set:(double)digit;
-- (void) sendDigit:(NSString *)digit;
-- (double) readDigits;
+- (void) send:(NSString *)digit;
+- (double) read;
 
 
 @end

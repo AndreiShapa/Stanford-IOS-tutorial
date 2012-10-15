@@ -3,10 +3,8 @@
 @interface CalculatorIo()
   @property (weak, nonatomic) IBOutlet UILabel *output;
 
-- (void) setString:(NSString *)digit;
 - (void) append:(NSString *)digit;
 
-- (NSString *) stringValue;
 - (double)doubleValue;
 
 @end
@@ -19,26 +17,7 @@
   self.output = output;
   return self;
 }
-- (NSString *)stringValue {
-  return self.output.text;
-}
-
-- (double)doubleValue {
-  return [self.stringValue doubleValue];
-}
-
-- (void) append:(NSString *)digit
-{
-  NSString* concatenated = [self.stringValue stringByAppendingString:digit];
-  self.output.text = concatenated;
-}
-
-- (void) setString:(NSString *)digit
-{
-  self.output.text = digit;
-}
-
-- (double) readDigits{
+- (double) read{
   self.inputting = NO;
   return self.doubleValue;
 }
@@ -49,15 +28,28 @@
   self.output.text = value;
 }
 
-- (void) sendDigit:(NSString *)digit
+- (void) send:(NSString *)digit
 {
   if (self.inputting){
     [self append:digit];
   }
   else{
-    [self setString:digit];
+    self.output.text = digit;
     self.inputting = YES;
   }
 }
+
+- (double)doubleValue {
+  return [self.output.text doubleValue];
+}
+
+- (void) append:(NSString *)digit
+{
+  NSString* concatenated = [self.output.text stringByAppendingString:digit];
+  self.output.text = concatenated;
+}
+
+
+
 
 @end
